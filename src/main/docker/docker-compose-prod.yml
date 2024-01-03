@@ -1,26 +1,27 @@
-# Use postgres/example user/password credentials
-version: '3.1'
+version: '2'
 
 services:
   app:
     image: 'quarkus/spring-data-jpa-quickstart-jvm:latest'
     build:
       context: .
-    container_name: app_quarkus
+    container_name: app
     ports:
-      - "8080:8085"
+      - "8080:8080"
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/quarkus_test
-      - SPRING_DATASOURCE_USERNAME=quarkus_test
-      - SPRING_DATASOURCE_PASSWORD=quarkus_test
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=drop-and-create
+      - QUARKUS_DATASOURCE_DB-KIND=postgresql
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://db:5432/quarkus_test
+      - QUARKUS_DATASOURCE_JDBC_USERNAME=quarkus_test
+      - QUARKUS_DATASOURCE_JDBC_PASSWORD=quarkus_test
+      - QUARKUS_HIBERNATE-ORM_DATABASE_GENERATION=drop-and-create
 
   db:
-    image: 'postgres'
+    image: 'postgres:14.1'
     container_name: db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=quarkus_test
       - POSTGRES_PASSWORD=quarkus_test
-      - postgres=14.1
